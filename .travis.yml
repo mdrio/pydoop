@@ -7,7 +7,7 @@ env:
 
   matrix:
    - HADOOPVERSION=cdh4.2.0 YARN=true HDFS_BACKEND=native
-   - HADOOPVERSION=cdh4.2.0 YARN=false HDFS_BACKEND=native
+   #- HADOOPVERSION=cdh4.2.0 YARN=false HDFS_BACKEND=native
 #    - HADOOPVERSION=1.0.4 HDFS_BACKEND=native
 #    - HADOOPVERSION=1.0.4 HDFS_BACKEND=native
 #    - HADOOPVERSION=1.0.4 HDFS_BACKEND=jpype-bridged

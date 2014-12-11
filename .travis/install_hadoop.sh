@@ -225,6 +225,9 @@ function install_cdh() {
 
         sudo mkdir /tmp/mapred_data
         sudo chown -R mapred:hadoop /tmp/mapred_data
+    else
+        sudo sed '/\/configuration/ i\<property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' <  /etc/hadoop/conf/hdfs-site.xml > /tmp/hdfs-site.xml;
+	    sudo mv /tmp/hdfs-site.xml /etc/hadoop/conf/hdfs-site.xml
     fi
 
 
@@ -233,6 +236,7 @@ function install_cdh() {
     # copy the path from the current environment (which may have been modified
     # in .travis.yml steps prior to this one).
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
+    echo "export PYTHONPATH=${PYTHONPATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
 
 

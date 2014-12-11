@@ -238,7 +238,7 @@ function install_cdh() {
     echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PYTHONPATH=${PYTHONPATH}" >> "${HadoopConfDir}/hadoop-env.sh"
-    echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
+    #echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
 
 
     log "Installing packages"
@@ -251,9 +251,11 @@ function install_cdh() {
     fi
 
 
+    for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo -E service $x stop ; done
+
     log "Stopping namenode & datanode"
-    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x stop ; done
-    for x in `cd /etc/init.d ; ls hadoop-*datanode` ; do sudo -E service $x stop ; done
+    #for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x stop ; done
+    #for x in `cd /etc/init.d ; ls hadoop-*datanode` ; do sudo -E service $x stop ; done
 
     log "Formatting namenode"
     sudo rm /tmp/hadoop-hdfs/dfs/name -rf
@@ -284,9 +286,9 @@ function install_cdh() {
         ${hdfs} -mkdir /var/log/hadoop-yarn 
         ${hdfs} -chown yarn:mapred /var/log/hadoop-yarn
         
-        #sudo service hadoop-yarn-resourcemanager start
-        #sudo service hadoop-yarn-nodemanager start
-        #sudo service hadoop-mapreduce-historyserver start
+        sudo service hadoop-yarn-resourcemanager start
+        sudo service hadoop-yarn-nodemanager start
+        sudo service hadoop-mapreduce-historyserver start
         export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
         export HADOOP_HOME=/usr/lib/hadoop
         #export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec

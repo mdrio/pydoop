@@ -228,6 +228,7 @@ function install_cdh() {
     # copy the path from the current environment (which may have been modified
     # in .travis.yml steps prior to this one).
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
+    echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
 
 
     log "Installing packages"

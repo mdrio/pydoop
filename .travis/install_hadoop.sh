@@ -200,7 +200,6 @@ function install_cdh() {
         sudo apt-get install hadoop-0.20-conf-pseudo
     fi
 
-
     for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
 
     local HadoopConfDir=/etc/hadoop/conf/
@@ -266,6 +265,7 @@ function install_cdh() {
         sudo service hadoop-yarn-nodemanager start 
         sudo service hadoop-mapreduce-historyserver start
         export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+        export HADOOP_HOME=/usr/lib/hadoop
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
         ${hdfs} -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

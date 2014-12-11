@@ -217,7 +217,7 @@ function install_cdh() {
         sudo chown -R mapred:hadoop /tmp/mapred_data
     fi
 
-    for i in `cd /etc/init.d; ls hadoop*`; do sudo service $i stop; done   
+    for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
     
     #if [[ "${HadoopVersion}" == *cdh3* ]]
     #   then 
@@ -235,7 +235,7 @@ function install_cdh() {
     sudo -u hdfs hadoop namenode -format
 
     log "Starting namenode"
-    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo service $x start ; done
+    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
 
     hadoop dfsadmin -safemode wait
     log "HDFS out of safe mode"
@@ -272,7 +272,7 @@ function install_cdh() {
     fi        
 
     log "Starting all Hadoop services"
-    for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo service $x start ; done
+    for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo -E service $x start ; done
 
     log "done"
 

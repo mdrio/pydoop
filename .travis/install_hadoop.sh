@@ -238,7 +238,7 @@ function install_cdh() {
     echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PYTHONPATH=${PYTHONPATH}" >> "${HadoopConfDir}/hadoop-env.sh"
-    #echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
+    echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
 
 
     log "Installing packages"
@@ -285,13 +285,16 @@ function install_cdh() {
         ${hdfs} -chown -R mapred:mapred /tmp/hadoop-yarn/staging
         ${hdfs} -mkdir /var/log/hadoop-yarn 
         ${hdfs} -chown yarn:mapred /var/log/hadoop-yarn
-        
+
+
+        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+        export HADOOP_HOME=/usr/lib/hadoop
+        export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
+        export HADOOP_CONF_DIR=${HadoopConfDir}
+
         sudo service hadoop-yarn-resourcemanager start
         sudo service hadoop-yarn-nodemanager start
         sudo service hadoop-mapreduce-historyserver start
-        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
-        export HADOOP_HOME=/usr/lib/hadoop
-        #export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
         ${hdfs} -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

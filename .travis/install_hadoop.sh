@@ -226,7 +226,8 @@ function install_cdh() {
     #      JH=${JAVA_HOME//\//\\\/}
     #     sed "s/# export JAVA_HOME=.*/ export JAVA_HOME=${JH//\//\\\/}/" /etc/hadoop/conf/hadoop-env.sh > /tmp/env.sh; sudo mv /tmp/env.sh /etc/hadoop/conf/hadoop-env.sh
     #fi
-    
+
+    log "JAVA HOME: ${JAVA_HOME}"
     echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"
     # copy the path from the current environment (which may have been modified
     # in .travis.yml steps prior to this one).

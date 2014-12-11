@@ -121,7 +121,7 @@ END
         <name>mapred.local.dir</name>
         <value>/tmp/mapred_data</value>
     </property>
-    <!--
+
     <property>
         <name>mapreduce.task.timeout</name>
         <value>60000</value>
@@ -130,8 +130,6 @@ END
         <name>mapred.task.timeout</name>
         <value>60000</value>
     </property>
-    -->
-
 </configuration>
 END
 

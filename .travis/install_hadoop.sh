@@ -256,11 +256,11 @@ function install_cdh() {
     log "HDFS out of safe mode"
     sudo jps
 
-    local hdfs="sudo -u hdfs hadoop fs"
+    local hdfs="sudo -u hdfs hdfs dfs"
     log "Creating HDFS directories"
     ${hdfs} -mkdir /tmp
     ${hdfs} -chmod 1777 /tmp
-    ${hdfs} -mkdir  /user/$USER
+    ${hdfs} -mkdir -p  /user/$USER
     ${hdfs} -chown $USER /user/$USER
     
      if [[ "$YARN" ]]; then

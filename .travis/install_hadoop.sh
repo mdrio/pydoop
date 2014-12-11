@@ -200,6 +200,9 @@ function install_cdh() {
         sudo apt-get install hadoop-0.20-conf-pseudo
     fi
 
+
+    for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
+
     local HadoopConfDir=/etc/hadoop/conf/
     log "Creating configuration under ${HadoopConfDir}"
     # make configuration files editable by everyone to simplify setting up the machine... :-/
@@ -218,8 +221,6 @@ function install_cdh() {
     fi
 
     java -version
-
-    for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
     
     #if [[ "${HadoopVersion}" == *cdh3* ]]
     #   then 

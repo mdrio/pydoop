@@ -110,6 +110,10 @@ END
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
     <property>
+      <name>mapreduce.framework.name</name>
+      <value>yarn</value>
+    </property>
+    <property>
         <name>mapred.job.tracker</name>
         <value>localhost:9001</value>
     </property>

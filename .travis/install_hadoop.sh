@@ -199,8 +199,8 @@ function install_cdh() {
     fi
 
 
-    log "Creating configuration under ${HadoopConfDir}"
     local HadoopConfDir=/etc/hadoop/conf/
+    log "Creating configuration under ${HadoopConfDir}"
     # make configuration files editable by everyone to simplify setting up the machine... :-/
     sudo chmod -R 777 "${HadoopConfDir}"
     # write configuration files

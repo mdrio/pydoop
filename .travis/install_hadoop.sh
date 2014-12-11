@@ -198,13 +198,12 @@ function install_cdh() {
         sudo apt-get install hadoop-0.20-conf-pseudo
     fi
 
-    #for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
 
-    local HadoopConfDir=/etc/hadoop/conf/
     log "Creating configuration under ${HadoopConfDir}"
+    local HadoopConfDir=/etc/hadoop/conf/
     # make configuration files editable by everyone to simplify setting up the machine... :-/
     sudo chmod -R 777 "${HadoopConfDir}"
-
+    # write configuration files
     sed -i -e '/\/configuration/ i\<property><name>dfs.replication</name><value>1</value></property><property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' "${HadoopConfDir}/hdfs-site.xml"
     sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
            -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
@@ -212,8 +211,6 @@ function install_cdh() {
     if [[ "${YARN}" ]]; then                
         write_yarn_site_config "${HadoopConfDir}"
 
-        #sudo rm /tmp/hadoop* -rf
-        #sudo rm /var/lib/hadoop-hdfs/* -rf
         sudo mkdir /tmp/mapred_data
         sudo chown -R mapred:hadoop /tmp/mapred_data
     fi
@@ -243,7 +240,7 @@ function install_cdh() {
     fi
 
 
-    log "Stopping namenode"
+    log "Stopping namenode & datanode"
     for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x stop ; done
     for x in `cd /etc/init.d ; ls hadoop-*datanode` ; do sudo -E service $x stop ; done
 
@@ -251,7 +248,7 @@ function install_cdh() {
     sudo rm /tmp/hadoop-hdfs/dfs/name -rf
     sudo -u hdfs hadoop namenode -format
 
-    log "Starting namenode"
+    log "Starting namenode & datanode"
     for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
     for x in `cd /etc/init.d ; ls hadoop-*datanode` ; do sudo -E service $x start ; done
 
@@ -279,7 +276,7 @@ function install_cdh() {
         #sudo service hadoop-yarn-resourcemanager start
         #sudo service hadoop-yarn-nodemanager start
         #sudo service hadoop-mapreduce-historyserver start
-        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapred
+        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
         export HADOOP_HOME=/usr/lib/hadoop
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

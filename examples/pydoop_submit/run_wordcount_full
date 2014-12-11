@@ -40,4 +40,3 @@ ${SUBMIT_CMD} --python-egg ${MZIP} --python-program ${PYTHONBIN}\
               --log-level ${LOGLEVEL} --job-name ${JOBNAME} \
               ${PROGNAME} ${INPUT} ${OUTPUT} 
 
-

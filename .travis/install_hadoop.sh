@@ -289,7 +289,7 @@ function install_cdh() {
         #sudo service hadoop-mapreduce-historyserver start
         export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
         export HADOOP_HOME=/usr/lib/hadoop
-        export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
+        #export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
         ${hdfs} -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

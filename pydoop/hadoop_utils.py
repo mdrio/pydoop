@@ -372,6 +372,7 @@ class PathFinder(object):
         if not self.__hadoop_home:
             self.__hadoop_home = (
                 os.getenv("HADOOP_HOME") or
+                os.getenv("HADOOP_MAPRED_HOME") or
                 os.getenv("HADOOP_PREFIX") or
                 fallback or
                 _hadoop_home_from_version_cmd() or

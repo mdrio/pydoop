@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit
+#set -o errexit
 set -o nounset
 
 HadoopArchiveUrl="http://archive.apache.org/dist/hadoop/core/"

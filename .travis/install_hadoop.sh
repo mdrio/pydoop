@@ -183,15 +183,13 @@ function install_cdh() {
     chmod 777 /tmp/hadoop-hdfs/ -R
     ls -la /tmp/hadoop-hdfs/dfs/name
 
-    log "Installing packages"
+    log "Installing repository and default hadoop configuration"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then 
         sudo add-apt-repository "deb [arch=amd64] http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-${HadoopVersion} contrib"
         curl -s http://archive.cloudera.com/cdh4/ubuntu/lucid/amd64/cdh/archive.key | sudo apt-key add -
         sudo apt-get update
         if [[ "$YARN" ]]; then
-            sudo -E apt-get install hadoop-conf-pseudo hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker
-        else
-            sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
+            sudo -E apt-get install hadoop-conf-pseudo
         fi
     elif [[ "${HadoopVersion}" == *cdh3* ]]; then
         sudo add-apt-repository "deb [arch=amd64] http://archive.cloudera.com/debian lucid-${HadoopVersion} contrib"
@@ -200,7 +198,7 @@ function install_cdh() {
         sudo apt-get install hadoop-0.20-conf-pseudo
     fi
 
-    for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
+    #for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
 
     local HadoopConfDir=/etc/hadoop/conf/
     log "Creating configuration under ${HadoopConfDir}"
@@ -233,12 +231,24 @@ function install_cdh() {
     # in .travis.yml steps prior to this one).
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
 
-    log "Formatting namenode"
-    sudo rm /tmp/hadoop-hdfs/dfs/name -rf
-    sudo -u hdfs hadoop namenode -format
 
-    log "Starting namenode"
-    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
+    log "Installing packages"
+    if [[ "${HadoopVersion}" == *cdh4* ]]; then
+        if [[ "$YARN" ]]; then
+            sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker
+        else
+            sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
+        fi
+    fi
+
+
+
+    #log "Formatting namenode"
+    #sudo rm /tmp/hadoop-hdfs/dfs/name -rf
+    #sudo -u hdfs hadoop namenode -format
+
+    #log "Starting namenode"
+    #for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
 
     hadoop dfsadmin -safemode wait
     log "HDFS out of safe mode"
@@ -261,10 +271,10 @@ function install_cdh() {
         ${hdfs} -mkdir /var/log/hadoop-yarn 
         ${hdfs} -chown yarn:mapred /var/log/hadoop-yarn
         
-        sudo service hadoop-yarn-resourcemanager start
-        sudo service hadoop-yarn-nodemanager start 
-        sudo service hadoop-mapreduce-historyserver start
-        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+        #sudo service hadoop-yarn-resourcemanager start
+        #sudo service hadoop-yarn-nodemanager start
+        #sudo service hadoop-mapreduce-historyserver start
+        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapred
         export HADOOP_HOME=/usr/lib/hadoop
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

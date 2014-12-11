@@ -121,6 +121,14 @@ END
         <name>mapred.local.dir</name>
         <value>/tmp/mapred_data</value>
     </property>
+    <property>
+        <name>mapreduce.task.timeout</name>
+        <value>60000</value>
+    </property>
+    <property>
+        <name>mapred.task.timeout</name>
+        <value>60000</value>
+    </property>
 </configuration>
 END
 
@@ -208,9 +216,9 @@ function install_cdh() {
     # make configuration files editable by everyone to simplify setting up the machine... :-/
     sudo chmod -R 777 "${HadoopConfDir}"
     # write configuration files
-    sed -i -e '/\/configuration/ i\<property><name>dfs.replication</name><value>1</value></property><property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' "${HadoopConfDir}/hdfs-site.xml"
-    sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
-           -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
+    #sed -i -e '/\/configuration/ i\<property><name>dfs.replication</name><value>1</value></property><property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' "${HadoopConfDir}/hdfs-site.xml"
+    #sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
+    #       -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
 
     if [[ "${YARN}" ]]; then                
         write_yarn_site_config "${HadoopConfDir}"
@@ -219,13 +227,6 @@ function install_cdh() {
         sudo chown -R mapred:hadoop /tmp/mapred_data
     fi
 
-    java -version
-    
-    #if [[ "${HadoopVersion}" == *cdh3* ]]
-    #   then 
-    #      JH=${JAVA_HOME//\//\\\/}
-    #     sed "s/# export JAVA_HOME=.*/ export JAVA_HOME=${JH//\//\\\/}/" /etc/hadoop/conf/hadoop-env.sh > /tmp/env.sh; sudo mv /tmp/env.sh /etc/hadoop/conf/hadoop-env.sh
-    #fi
 
     log "JAVA HOME: ${JAVA_HOME}"
     echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"

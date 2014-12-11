@@ -242,13 +242,15 @@ function install_cdh() {
     fi
 
 
+    log "Stopping namenode"
+    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x stop ; done
 
-    #log "Formatting namenode"
-    #sudo rm /tmp/hadoop-hdfs/dfs/name -rf
-    #sudo -u hdfs hadoop namenode -format
+    log "Formatting namenode"
+    sudo rm /tmp/hadoop-hdfs/dfs/name -rf
+    sudo -u hdfs hadoop namenode -format
 
-    #log "Starting namenode"
-    #for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
+    log "Starting namenode"
+    for x in `cd /etc/init.d ; ls hadoop-*namenode` ; do sudo -E service $x start ; done
 
     hadoop dfsadmin -safemode wait
     log "HDFS out of safe mode"
@@ -285,8 +287,8 @@ function install_cdh() {
         ${hdfs} -chown mapred:hadoop /tmp/mapred/system
     fi        
 
-    log "Starting all Hadoop services"
-    for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo -E service $x start ; done
+    #log "Starting all Hadoop services"
+    #for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo -E service $x start ; done
 
     log "done"
 

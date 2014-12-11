@@ -217,6 +217,8 @@ function install_cdh() {
         sudo chown -R mapred:hadoop /tmp/mapred_data
     fi
 
+    java -version
+
     for i in `cd /etc/init.d; ls hadoop*`; do sudo -E service $i stop; done
     
     #if [[ "${HadoopVersion}" == *cdh3* ]]

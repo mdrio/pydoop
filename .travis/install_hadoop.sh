@@ -121,6 +121,7 @@ END
         <name>mapred.local.dir</name>
         <value>/tmp/mapred_data</value>
     </property>
+    <!--
     <property>
         <name>mapreduce.task.timeout</name>
         <value>60000</value>
@@ -129,6 +130,8 @@ END
         <name>mapred.task.timeout</name>
         <value>60000</value>
     </property>
+    -->
+
 </configuration>
 END
 
@@ -215,12 +218,12 @@ function install_cdh() {
     log "Creating configuration under ${HadoopConfDir}"
     # make configuration files editable by everyone to simplify setting up the machine... :-/
     sudo chmod -R 777 "${HadoopConfDir}"
+
     # write configuration files
     #sed -i -e '/\/configuration/ i\<property><name>dfs.replication</name><value>1</value></property><property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' "${HadoopConfDir}/hdfs-site.xml"
     #sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
     #       -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
-
-    if [[ "${YARN}" ]]; then                
+    if [[ "${YARN}" ]]; then
         write_yarn_site_config "${HadoopConfDir}"
 
         sudo mkdir /tmp/mapred_data
@@ -232,9 +235,9 @@ function install_cdh() {
 
 
     log "JAVA HOME: ${JAVA_HOME}"
-    echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"
     # copy the path from the current environment (which may have been modified
     # in .travis.yml steps prior to this one).
+    echo "export JAVA_HOME=$JAVA_HOME" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PATH=${PATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export PYTHONPATH=${PYTHONPATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"

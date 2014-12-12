@@ -111,7 +111,7 @@ END
 <configuration>
     <property>
       <name>mapreduce.framework.name</name>
-      <value>local</value>
+      <value>yarn</value>
     </property>
     <property>
         <name>mapred.job.tracker</name>
@@ -244,7 +244,7 @@ function install_cdh() {
     log "Installing packages"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then
         if [[ "$YARN" ]]; then
-            sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker
+            sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker hadoop-client
         else
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
         fi

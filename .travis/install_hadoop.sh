@@ -222,13 +222,12 @@ function install_cdh() {
     #sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
     #       -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
     if [[ "${YARN}" ]]; then
-        write_yarn_site_config "${HadoopConfDir}"
-
-        sudo mkdir /tmp/mapred_data
-        sudo chown -R mapred:hadoop /tmp/mapred_data
-    else
         sudo sed '/\/configuration/ i\<property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' <  /etc/hadoop/conf/hdfs-site.xml > /tmp/hdfs-site.xml;
 	    sudo mv /tmp/hdfs-site.xml /etc/hadoop/conf/hdfs-site.xml
+    else
+	    write_yarn_site_config "${HadoopConfDir}"
+        sudo mkdir /tmp/mapred_data
+        sudo chown -R mapred:hadoop /tmp/mapred_data
     fi
 
 

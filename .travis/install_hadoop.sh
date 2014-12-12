@@ -111,7 +111,7 @@ END
 <configuration>
     <property>
       <name>mapreduce.framework.name</name>
-      <value>yarn</value>
+      <value>classic</value>
     </property>
     <property>
         <name>mapred.job.tracker</name>

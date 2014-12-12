@@ -287,10 +287,12 @@ function install_cdh() {
         ${hdfs} -chown yarn:mapred /var/log/hadoop-yarn
 
 
-        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-mapreduce
+        export HADOOP_MAPRED_HOME=/usr/lib/hadoop-yarn
         export HADOOP_HOME=/usr/lib/hadoop
         export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
         export HADOOP_CONF_DIR=${HadoopConfDir}
+        #export HADOOP_COMMON_LIB_NATIVE_DIR="${HADOOP_HOME}/lib/native"
+        #export HADOOP_OPTS="-Djava.library.path=${HADOOP_HOME}/lib"
 
         sudo service hadoop-yarn-resourcemanager start
         sudo service hadoop-yarn-nodemanager start

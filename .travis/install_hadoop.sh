@@ -90,7 +90,7 @@ function write_yarn_site_config() {
 <configuration>
     <property>
         <name>fs.default.name</name>
-        <value>hdfs://localhost:8020</value>
+        <value>hdfs://localhost:9000</value>
     </property>
 
     <!-- OOZIE proxy user setting -->

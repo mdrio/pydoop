@@ -220,6 +220,9 @@ function install_cdh() {
     if [[ "${YARN}" ]]; then
         sudo sed '/\/configuration/ i\<property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' <  /etc/hadoop/conf/hdfs-site.xml > /tmp/hdfs-site.xml;
 	    sudo mv /tmp/hdfs-site.xml /etc/hadoop/conf/hdfs-site.xml
+
+	    sudo sed '/\/configuration/ i\<property><name>mapreduce.task.timeout</name><value>60000</value></property><property><name>mapred.task.timeout</name><value>60000</value></property>' <  /etc/hadoop/conf/mapred-site.xml > /tmp/mapred-site.xml;
+	    sudo mv /tmp/mapred-site.xml /etc/hadoop/conf/mapred-site.xml
     else
 	    write_yarn_site_config "${HadoopConfDir}"
         sudo mkdir /tmp/mapred_data

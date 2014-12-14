@@ -110,10 +110,6 @@ END
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
     <property>
-      <name>mapreduce.framework.name</name>
-      <value>yarn</value>
-    </property>
-    <property>
         <name>mapred.job.tracker</name>
         <value>localhost:9001</value>
     </property>
@@ -266,7 +262,6 @@ function install_cdh() {
 
     hadoop dfsadmin -safemode wait
     log "HDFS out of safe mode"
-    sudo jps
 
     local hdfs="sudo -u hdfs hdfs dfs"
     log "Creating HDFS directories"
@@ -296,6 +291,9 @@ function install_cdh() {
         sudo service hadoop-yarn-resourcemanager start
         sudo service hadoop-yarn-nodemanager start
         sudo service hadoop-mapreduce-historyserver start
+
+        sudo jps
+
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
         ${hdfs} -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging

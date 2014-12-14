@@ -223,6 +223,10 @@ function install_cdh() {
 
 	    sudo sed '/\/configuration/ i\<property><name>mapreduce.task.timeout</name><value>60000</value></property><property><name>mapred.task.timeout</name><value>60000</value></property>' <  /etc/hadoop/conf/mapred-site.xml > /tmp/mapred-site.xml;
 	    sudo mv /tmp/mapred-site.xml /etc/hadoop/conf/mapred-site.xml
+
+	    sudo sed '/\/configuration/ i\<property><name>yarn.nodemanager.vmem-pmem-ratio</name><value>2.8</value></property>' <  /etc/hadoop/conf/yarn-site.xml > /tmp/yarn-site.xml;
+	    sudo mv /tmp/yarn-site.xml /etc/hadoop/conf/yarn-site.xml
+
     else
 	    write_yarn_site_config "${HadoopConfDir}"
         sudo mkdir /tmp/mapred_data

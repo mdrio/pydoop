@@ -5,11 +5,11 @@ examples=(
     #hdfs
     #input_format
     #pydoop_script
-    #pydoop_submit
+    pydoop_submit
     #self_contained
     #ipcount
     #sequence_file
-    wordcount
+    #wordcount
     #simulator
 )
 

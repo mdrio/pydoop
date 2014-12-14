@@ -2,15 +2,15 @@
 trap exit ERR	
 
 examples=(
-    hdfs
-    input_format
-    pydoop_script
+    #hdfs
+    #input_format
+    #pydoop_script
     #pydoop_submit
-    self_contained
-    ipcount
-    sequence_file
+    #self_contained
+    #ipcount
+    #sequence_file
     wordcount
-    simulator
+    #simulator
 )
 
 some_failed=0

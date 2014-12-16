@@ -243,6 +243,9 @@ function install_cdh() {
     echo "export PYTHONPATH=${PYTHONPATH}" >> "${HadoopConfDir}/hadoop-env.sh"
     echo "export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec" >> "${HadoopConfDir}/hadoop-env.sh"
 
+    export HADOOP_HOME=/usr/lib/hadoop
+    export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
+    export HADOOP_CONF_DIR=${HadoopConfDir}
 
     log "Installing packages"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then
@@ -277,30 +280,25 @@ function install_cdh() {
     ${hdfs} -chmod 1777 /tmp
     ${hdfs} -mkdir -p  /user/$USER
     ${hdfs} -chown $USER /user/$USER
-    
+
+
      if [[ "${Yarn}" == true ]]; then
         ${hdfs}  -mkdir /tmp/hadoop-yarn/staging
         ${hdfs}  -chmod -R 1777 /tmp/hadoop-yarn/staging
-        
+
         ${hdfs} -mkdir /tmp/hadoop-yarn/staging/history/done_intermediate
         ${hdfs} -chmod -R 1777 /tmp/hadoop-yarn/staging/history/done_intermediate
         ${hdfs} -chown -R mapred:mapred /tmp/hadoop-yarn/staging
-        ${hdfs} -mkdir /var/log/hadoop-yarn 
+        ${hdfs} -mkdir /var/log/hadoop-yarn
         ${hdfs} -chown yarn:mapred /var/log/hadoop-yarn
 
-
         export HADOOP_MAPRED_HOME=/usr/lib/hadoop-yarn
-        export HADOOP_HOME=/usr/lib/hadoop
-        export HADOOP_LIBEXEC_DIR=/usr/lib/hadoop/libexec
-        export HADOOP_CONF_DIR=${HadoopConfDir}
         #export HADOOP_COMMON_LIB_NATIVE_DIR="${HADOOP_HOME}/lib/native"
         #export HADOOP_OPTS="-Djava.library.path=${HADOOP_HOME}/lib"
 
         sudo service hadoop-yarn-resourcemanager start
         sudo service hadoop-yarn-nodemanager start
         sudo service hadoop-mapreduce-historyserver start
-
-        sudo jps
 
     else
         ${hdfs} -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
@@ -313,6 +311,8 @@ function install_cdh() {
 
     #log "Starting all Hadoop services"
     #for x in `cd /etc/init.d ; ls hadoop-*` ; do sudo -E service $x start ; done
+
+    sudo jps
 
     log "done"
 

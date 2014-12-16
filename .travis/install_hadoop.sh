@@ -181,7 +181,7 @@ function install_standard_hadoop() {
 
 
 function install_cdh() {
-    [ $# -eq 1 ] || error "Missing HadoopVersion function argument"
+    [ $# -eq 2 ] || error "Missing HadoopVersion and Yarn function argument"
     local HadoopVersion="${1}"
     local Yarn="${2}"
 
@@ -341,7 +341,11 @@ function print_hadoop_env() {
 if [[ "${HADOOPVERSION}" != *cdh* ]]; then
     install_standard_hadoop "${HADOOPVERSION}"
 else # else CDH
-    install_cdh "${HADOOPVERSION}" "${YARN}"
+    if [[ -z "${YARN}" ]]; then
+        install_cdh "${HADOOPVERSION}" "false"
+    else
+        install_cdh "${HADOOPVERSION}" "true"
+    fi
 fi
 
 print_hadoop_env > "${TravisHadoopEnvFile}"

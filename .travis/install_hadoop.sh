@@ -183,6 +183,7 @@ function install_standard_hadoop() {
 function install_cdh() {
     [ $# -eq 1 ] || error "Missing HadoopVersion function argument"
     local HadoopVersion="${1}"
+    local Yarn="${2}"
 
     log "Installing Cloudera Hadoop, version ${HadoopVersion}"
 
@@ -197,7 +198,7 @@ function install_cdh() {
         sudo add-apt-repository "deb [arch=amd64] http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-${HadoopVersion} contrib"
         curl -s http://archive.cloudera.com/cdh4/ubuntu/lucid/amd64/cdh/archive.key | sudo apt-key add -
         sudo apt-get update
-        if [[ -n "$YARN" ]]; then
+        if [[ "${Yarn}" ]]; then
             sudo -E apt-get install hadoop-conf-pseudo
         fi
     elif [[ "${HadoopVersion}" == *cdh3* ]]; then
@@ -217,7 +218,7 @@ function install_cdh() {
     #sed -i -e '/\/configuration/ i\<property><name>dfs.replication</name><value>1</value></property><property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' "${HadoopConfDir}/hdfs-site.xml"
     #sed -i -e '/\/configuration/ i\<property><name>mapreduce.task.timeout<\/name><value>60000<\/value><\/property>' \
     #       -e '/\/configuration/ i\<property><name>mapred.task.timeout<\/name><value>60000<\/value><\/property>' "${HadoopConfDir}/mapred-site.xml"
-    if [[ -n "${YARN}" ]]; then
+    if [[ "${Yarn}" ]]; then
         sudo sed '/\/configuration/ i\<property><name>dfs.permissions.supergroup<\/name><value>admin<\/value><\/property>' <  /etc/hadoop/conf/hdfs-site.xml > /tmp/hdfs-site.xml;
 	    sudo mv /tmp/hdfs-site.xml /etc/hadoop/conf/hdfs-site.xml
 
@@ -245,7 +246,7 @@ function install_cdh() {
 
     log "Installing packages"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then
-        if [[ -n "$YARN" ]]; then
+        if [[ "${Yarn}" ]]; then
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker hadoop-client
         else
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
@@ -277,7 +278,7 @@ function install_cdh() {
     ${hdfs} -mkdir -p  /user/$USER
     ${hdfs} -chown $USER /user/$USER
     
-     if [[ -n "$YARN" ]]; then
+     if [[ "${Yarn}" ]]; then
         ${hdfs}  -mkdir /tmp/hadoop-yarn/staging
         ${hdfs}  -chmod -R 1777 /tmp/hadoop-yarn/staging
         
@@ -340,7 +341,7 @@ function print_hadoop_env() {
 if [[ "${HADOOPVERSION}" != *cdh* ]]; then
     install_standard_hadoop "${HADOOPVERSION}"
 else # else CDH
-    install_cdh "${HADOOPVERSION}"
+    install_cdh "${HADOOPVERSION}" "${YARN}"
 fi
 
 print_hadoop_env > "${TravisHadoopEnvFile}"

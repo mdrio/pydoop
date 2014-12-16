@@ -200,6 +200,10 @@ function install_cdh() {
         sudo apt-get update
         if [[ "${Yarn}" == true ]]; then
             sudo -E apt-get install hadoop-conf-pseudo
+
+        else
+            sudo -E apt-get install hadoop-0.20-conf-pseudo
+
         fi
     elif [[ "${HadoopVersion}" == *cdh3* ]]; then
         sudo add-apt-repository "deb [arch=amd64] http://archive.cloudera.com/debian lucid-${HadoopVersion} contrib"

@@ -254,7 +254,6 @@ function install_cdh() {
     log "Installing packages"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then
         if [[ "${Yarn}" == true ]]; then
-            export HADOOP_HOME=/usr/lib/hadoop
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker hadoop-client
         else
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
@@ -314,7 +313,6 @@ function install_cdh() {
         ${hdfs} -chown mapred:hadoop /tmp/mapred/system
 
         for x in `cd /etc/init.d ; ls hadoop-0.20*` ; do sudo -E service $x start ; done
-        unset HADOOP_HOME
     fi        
 
     #log "Starting all Hadoop services"

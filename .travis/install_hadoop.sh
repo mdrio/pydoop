@@ -257,7 +257,6 @@ function install_cdh() {
             export HADOOP_HOME=/usr/lib/hadoop
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker hadoop-client
         else
-            export HADOOP_HOME=/usr/lib/hadoop/client-0.20
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
         fi
     fi
@@ -313,6 +312,8 @@ function install_cdh() {
         
         ${hdfs} -mkdir /tmp/mapred/system
         ${hdfs} -chown mapred:hadoop /tmp/mapred/system
+
+        for x in `cd /etc/init.d ; ls hadoop-0.20*` ; do sudo -E service $x start ; done
     fi        
 
     #log "Starting all Hadoop services"

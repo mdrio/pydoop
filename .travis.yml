@@ -60,6 +60,7 @@ before_install:
 - . /tmp/set_travis_hadoop_env.sh
 - env
 - test -n "${HADOOP_HOME}" && export PATH="${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:${PATH}"
+- if [[ "${HADOOPVERSION}" == *cdh* ]]; then unset HADOOP_HOME; fi
 
 install:
 - $VIRTUAL_ENV/bin/python setup.py build --hdfs-core-impl $HDFS_BACKEND

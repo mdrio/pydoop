@@ -314,6 +314,7 @@ function install_cdh() {
         ${hdfs} -chown mapred:hadoop /tmp/mapred/system
 
         for x in `cd /etc/init.d ; ls hadoop-0.20*` ; do sudo -E service $x start ; done
+        unset HADOOP_HOME
     fi        
 
     #log "Starting all Hadoop services"

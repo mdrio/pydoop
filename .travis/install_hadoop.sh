@@ -254,8 +254,10 @@ function install_cdh() {
     log "Installing packages"
     if [[ "${HadoopVersion}" == *cdh4* ]]; then
         if [[ "${Yarn}" == true ]]; then
+            export HADOOP_HOME=/usr/lib/hadoop
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-client hadoop-0.20-mapreduce-tasktracker hadoop-client
         else
+            export HADOOP_HOME=/usr/lib/hadoop/client-0.20
             sudo -E apt-get install hadoop-0.20-mapreduce-jobtracker hadoop-hdfs-datanode hadoop-hdfs-namenode hadoop-hdfs-secondarynamenode hadoop-client hadoop-0.20-mapreduce-tasktracker
         fi
     fi
